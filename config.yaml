@@ -102,4 +102,4 @@ presubmits:
       spec:
         containers:
           - image: golang
-            command: ["make build"]
+            command: ["CGO_ENABLED=0 GOOS=linux GOARCH=amd64 GO111MODULE=on go build *.go"]

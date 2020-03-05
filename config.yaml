@@ -1,0 +1,105 @@
+# FROM COMMIT: ((COMMIT_HASH_TOKEN))
+# Config file for Spectro Cloud Prow
+plank:
+  allow_cancellations: true  # whether to delete ProwJobs pod or not when new instances are triggered for the same PR
+  job_url_template: 'https://34.102.201.77/view/gcs/demo-prow{{if eq .Spec.Type "presubmit"}}/pr-logs/pull/{{.Spec.Refs.Org}}_{{.Spec.Refs.Repo}}/{{with index .Spec.Refs.Pulls 0}}{{.Number}}{{end}}{{else if eq .Spec.Type "batch"}}/pr-logs/pull/batch{{else}}/logs{{end}}/{{.Spec.Job}}/{{.Status.BuildID}}'
+  job_url_prefix_config:
+    '*': https://console.cloud.google.com/storage/browser/
+  pod_pending_timeout: 60m
+  default_decoration_config:
+    timeout: 2h
+    grace_period: 15s
+    utility_images:
+      clonerefs: "gcr.io/k8s-prow/clonerefs:v20191121-1ff2207db"
+      initupload: "gcr.io/k8s-prow/initupload:v20191121-1ff2207db"
+      entrypoint: "gcr.io/k8s-prow/entrypoint:v20191121-1ff2207db"
+      sidecar: "gcr.io/k8s-prow/sidecar:v20191121-1ff2207db"
+    gcs_configuration:
+      bucket: "prow-demo"
+      path_strategy: "explicit"
+    gcs_credentials_secret: "gcs-credentials"
+    ssh_key_secrets:
+      - ssh-key-secret
+
+# Sinker Config
+sinker:
+  resync_period: 1h
+  max_prowjob_age: 168h
+  max_pod_age: 6h
+
+
+# Global Config
+prowjob_namespace: default
+pod_namespace: test-pods
+log_level: debug
+
+# Presets
+presets:
+  - labels:
+      preset-build_jobs: "true"
+    env:
+      - name: GO111MODULE
+        value: "on"
+      - name: DOCKER_REGISTRY
+        value: gcr.io/spectro-images
+      - name: OVERLAY
+        value: overlays/prod
+
+  - labels:
+      preset-push-tokens: "true"
+    env:
+      - name: DOCKER_LOGIN
+        value: "true"
+    volumeMounts:
+      - name: gcs-push-volume
+        mountPath: /etc/gcs-push-volume
+      - name: gsutil-pull-volume
+        mountPath: /etc/gsutil-pull-volume
+      - name: docker-socket-volume
+        mountPath: /var/run/docker.sock
+    volumes:
+      - name: gcs-push-volume
+        secret:
+          secretName: spectro-images-credentials
+      - name: gsutil-pull-volume
+        secret:
+          secretName: gcs-credentials
+      - name: docker-socket-volume
+        hostPath:
+          path: /var/run/docker.sock
+          type: File
+
+# Presubmit Jobs
+presubmits:
+  spectrocloud/ops:
+    - name: ops_build
+      context: ops_build
+      agent: kubernetes
+      decorate: true
+      always_run: true
+      clone_uri: "git@github.com:spectrocloud/ops.git"
+      labels:
+        preset-build_jobs: "true"
+        preset-push-tokens: "true"
+      spec:
+        containers:
+          - image: gcr.io/testbed1-249617/spectro-prow-builder
+            command:
+              - spectro-runner.sh
+            args:
+              - sh
+              - prow/presubmit.sh
+
+  roshanirathi/prow-trial:
+    - name: rosh_prow_trial
+      context: rosh_prow_trial
+      agent: kubernetes
+      alway_run: true
+      clone_uri: "git@github.com:roshanirathi/prow-trial.git"
+      labels:
+        preset-build_jobs: "true"
+        preset-push-tokens: "true"
+      spec:
+        containers:
+          - image: golang
+            command: ["make build"]

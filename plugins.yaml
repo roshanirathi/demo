@@ -1,0 +1,24 @@
+plugins:
+  spectrocloud/ops:
+    - size
+    - trigger
+    - wip
+    - approve
+    - lgtm
+    - blunderbuss
+    - label
+    - welcome
+    - yuks
+    - shrug
+
+  roshanirathi/prow-trial:
+    - wip
+    - approve
+    - lgtm
+    - label
+    - size
+    - blunderbuss
+    - trigger
+    - welcome
+    - yuks
+    - joke

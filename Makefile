@@ -1,6 +1,6 @@
 
 build:
-	go build *.go
+	CGO_ENABLED=0 GOOS=linux GOARCH=amd64 GO111MODULE=on go build *.go
 
 
 get-cluster-credentials:

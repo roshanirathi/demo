@@ -106,4 +106,4 @@ presubmits:
               - go
             args:
               - build
-              - main.go
+              - prow-trial/main.go

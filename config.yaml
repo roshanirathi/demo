@@ -103,7 +103,6 @@ presubmits:
         containers:
           - image: golang
             command:
-              - go
+              - sleep
             args:
-              - build
-              - prow-trial/main.go
+              - 1000000

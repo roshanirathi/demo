@@ -102,4 +102,8 @@ presubmits:
       spec:
         containers:
           - image: golang
-            command: ["go build *.go"]
+            command:
+              - go
+            args:
+              - build
+              - main.go

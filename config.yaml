@@ -104,5 +104,7 @@ presubmits:
         containers:
           - name: trial
             image: golang
-            command: ["sleep"]
-            args: ["1000000"]
+            # command: ["sleep"]
+            # args: ["1000000"]
+            command: ["go"]
+            args: ["build", "main.go"]

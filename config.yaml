@@ -94,12 +94,17 @@ presubmits:
     - name: rosh_prow_trial
       context: rosh_prow_trial
       agent: kubernetes
-      alway_run: true
+      decorate: true
+      always_run: true
       clone_uri: "git@github.com:roshanirathi/prow-trial.git"
       labels:
         preset-build_jobs: "true"
         preset-push-tokens: "true"
       spec:
         containers:
-          - image: golang
-            command: ["make build"]
+          - name: trial
+            image: golang
+            # command: ["sleep"]
+            # args: ["1000000"]
+            command: ["go"]
+            args: ["build", "main.go"]

@@ -1,6 +1,6 @@
 
 build:
-	go build *.go
+	CGO_ENABLED=0 GOOS=linux GOARCH=amd64 GO111MODULE=on go build *.go
 
 
 get-cluster-credentials:
@@ -9,3 +9,9 @@ get-cluster-credentials:
 
 update-plugins: get-cluster-credentials
 	kubectl create configmap plugins --from-file=plugins.yaml=plugins.yaml --dry-run -o yaml | kubectl replace configmap plugins -f -
+
+update-configs: get-cluster-credentials
+	kubectl create configmap config --from-file=config.yaml=config.yaml --dry-run -o yaml | kubectl replace configmap config -f -
+
+check-config: ## Check prow config.yaml for errors
+	./checkconfig  --config-path=config.yaml -strict

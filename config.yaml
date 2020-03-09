@@ -126,6 +126,8 @@ presubmits:
       agent: kubernetes
       decorate: true
       #always_run: true
+      trigger: ^test-suite$
+      rerun_command: test-suite
       clone_uri: "git@github.com:roshanirathi/prow-trial.git"
       labels:
         preset-build_jobs: "true"
@@ -141,6 +143,8 @@ presubmits:
       agent: kubernetes
       decorate: true
       #always_run: true
+      trigger: ^test-suite$
+      rerun_command: test-suite
       clone_uri: "git@github.com:roshanirathi/prow-trial.git"
       labels:
         preset-build_jobs: "true"
@@ -156,6 +160,8 @@ presubmits:
       agent: kubernetes
       decorate: true
       #always_run: true
+      trigger: ^test-suite$
+      rerun_command: test-suite
       clone_uri: "git@github.com:roshanirathi/prow-trial.git"
       labels:
         preset-build_jobs: "true"

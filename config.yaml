@@ -106,18 +106,63 @@ presubmits:
             image: golang
             command: ["go"]
             args: ["build", "main.go"]
-    - name: prow-multiple-tests
+    - name: test-1
       context: prow-multiple-tests
       agent: kubernetes
       decorate: true
-      always_run: true
+      #always_run: true
       clone_uri: "git@github.com:roshanirathi/prow-trial.git"
       labels:
         preset-build_jobs: "true"
         preset-push-tokens: "true"
       spec:
         containers:
-          - name: multiple
+          - name: test-1
+            image: alpine
+            command: ["echo"]
+            args: ["hello", "world"]
+    - name: test-2
+      context: prow-multiple-tests
+      agent: kubernetes
+      decorate: true
+      #always_run: true
+      clone_uri: "git@github.com:roshanirathi/prow-trial.git"
+      labels:
+        preset-build_jobs: "true"
+        preset-push-tokens: "true"
+      spec:
+        containers:
+          - name: test-2
+            image: alpine
+            command: ["echo"]
+            args: ["hello", "world"]
+    - name: test-3
+      context: prow-multiple-tests
+      agent: kubernetes
+      decorate: true
+      #always_run: true
+      clone_uri: "git@github.com:roshanirathi/prow-trial.git"
+      labels:
+        preset-build_jobs: "true"
+        preset-push-tokens: "true"
+      spec:
+        containers:
+          - name: test-3
+            image: alpine
+            command: ["echo"]
+            args: ["hello", "world"]
+    - name: test-4
+      context: prow-multiple-tests
+      agent: kubernetes
+      decorate: true
+      #always_run: true
+      clone_uri: "git@github.com:roshanirathi/prow-trial.git"
+      labels:
+        preset-build_jobs: "true"
+        preset-push-tokens: "true"
+      spec:
+        containers:
+          - name: test-4
             image: alpine
             command: ["echo"]
             args: ["hello", "world"]

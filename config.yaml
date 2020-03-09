@@ -107,7 +107,7 @@ presubmits:
             command: ["go"]
             args: ["build", "main.go"]
     - name: test-1
-      context: prow-multiple-tests
+      context: test-1
       agent: kubernetes
       decorate: true
       #always_run: true
@@ -122,7 +122,7 @@ presubmits:
             command: ["echo"]
             args: ["hello", "world"]
     - name: test-2
-      context: prow-multiple-tests
+      context: test-2
       agent: kubernetes
       decorate: true
       #always_run: true
@@ -137,7 +137,7 @@ presubmits:
             command: ["echo"]
             args: ["hello", "world"]
     - name: test-3
-      context: prow-multiple-tests
+      context: test-3
       agent: kubernetes
       decorate: true
       #always_run: true
@@ -152,7 +152,7 @@ presubmits:
             command: ["echo"]
             args: ["hello", "world"]
     - name: test-4
-      context: prow-multiple-tests
+      context: test-4
       agent: kubernetes
       decorate: true
       #always_run: true

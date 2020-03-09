@@ -104,12 +104,8 @@ presubmits:
         containers:
           - name: trial
             image: golang
-            # command: ["sleep"]
-            # args: ["1000000"]
             command: ["go"]
             args: ["build", "main.go"]
-
-  roshanirathi/prow-trial:
     - name: prow-multiple-tests
       context: prow-multiple-tests
       agent: kubernetes

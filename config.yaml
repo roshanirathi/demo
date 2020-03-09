@@ -108,3 +108,20 @@ presubmits:
             # args: ["1000000"]
             command: ["go"]
             args: ["build", "main.go"]
+
+  roshanirathi/prow-trial:
+    - name: prow-multiple-tests
+      context: prow-multiple-tests
+      agent: kubernetes
+      decorate: true
+      always_run: true
+      clone_uri: "git@github.com:roshanirathi/prow-trial.git"
+      labels:
+        preset-build_jobs: "true"
+        preset-push-tokens: "true"
+      spec:
+        containers:
+          - name: multiple
+            image: alpine
+            command: ["echo"]
+            args: ["hello", "world"]

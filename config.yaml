@@ -94,6 +94,7 @@ presubmits:
     - name: rosh_prow_trial
       context: rosh_prow_trial
       agent: kubernetes
+      cluster: gke_testbed1-249617_us-central1-a_trial
       decorate: true
       always_run: true
       clone_uri: "git@github.com:roshanirathi/prow-trial.git"

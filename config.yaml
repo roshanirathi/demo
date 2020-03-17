@@ -172,3 +172,29 @@ presubmits:
             image: alpine
             command: ["echo"]
             args: ["hello", "world"]
+
+periodics:
+- name: cluster-unspecified
+  # cluster:
+  interval: 10m
+  decorate: true
+  spec:
+    containers:
+    - image: alpine
+      command: ["/bin/date"]
+- name: cluster-default
+  cluster: gke_testbed1-249617_us-central1-a_prowdemo
+  interval: 10m
+  decorate: true
+  spec:
+    containers:
+    - image: alpine
+      command: ["/bin/date"]
+- name: cluster-other
+  cluster: gke_testbed1-249617_us-central1-a_trial
+  interval: 10m
+  decorate: true
+  spec:
+    containers:
+    - image: alpine
+      command: ["/bin/date"]

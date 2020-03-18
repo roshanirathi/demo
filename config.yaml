@@ -19,7 +19,7 @@ plank:
       path_strategy: "explicit"
     gcs_credentials_secret: "gcs-credentials"
     ssh_key_secrets:
-      - ssh-key-secret
+      - prow-ssh-secret
 
 # Sinker Config
 sinker:
@@ -174,25 +174,3 @@ presubmits:
             command: ["echo"]
             args: ["hello", "world"]
 
-periodics:
-- cron: "35 * * * *"
-  name: rosh-daily-build
-  agent: kubernetes
-  cluster: gke_testbed1-249617_us-central1-a_trial
-  decorate: true
-  clone_uri: "git@github.com:roshanirathi/prow-trial.git"
-  extra_refs:
-  - org: roshanirathi
-    repo: prow-trial
-    base_ref: master
-    clone_uri: "git@github.com:roshanirathi/prow-trial.git"
-    workdir: true
-  spec:
-      containers:
-      - name: testing-on-trial
-        image: alpine
-        command:
-        - echo
-        args:
-        - hello
-        - world

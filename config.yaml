@@ -104,9 +104,9 @@ presubmits:
       spec:
         containers:
           - name: trial
-            image: golang
+            image: docker
             command: ["docker"]
-            args: ["docker", "run", "--name", "testnginx", "-d", "-p", "8080:80", "nginx"]
+            args: ["run", "--name", "testnginx", "-d", "-p", "8080:80", "nginx"]
     - name: test-1
       context: test-1
       agent: kubernetes

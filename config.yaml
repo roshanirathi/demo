@@ -91,8 +91,8 @@ presubmits:
               - prow/presubmit.sh
 
   roshanirathi/prow-trial:
-    - name: rosh_prow_trial
-      context: rosh_prow_trial
+    - name: rosh
+      context: rosh
       agent: kubernetes
       cluster: gke_testbed1-249617_us-central1-c_prowtest1
       decorate: true
@@ -109,8 +109,8 @@ presubmits:
             args: ["hello", "world"]
 
   spectrocloud/hubble:
-    - name: hubble_build
-      context: hubble_build
+    - name: hubble
+      context: hubble
       agent: kubernetes
       cluster: gke_testbed1-249617_us-central1-c_prowtest1
       decorate: true

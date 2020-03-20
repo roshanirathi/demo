@@ -21,3 +21,14 @@ plugins:
     - trigger
     - welcome
     - yuks
+
+  spectrocloud/hubble:
+    - wip
+    - approve
+    - lgtm
+    - label
+    - size
+    - blunderbuss
+    - trigger
+    - welcome
+    - yuks

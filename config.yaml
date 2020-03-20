@@ -108,7 +108,7 @@ presubmits:
             command: ["echo"]
             args: ["hello", "world"]
 
-  spectrocloud/hubble:
+  roshanirathi/prow-trial:
     - name: hubble
       context: hubble
       agent: kubernetes

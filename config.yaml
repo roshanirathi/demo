@@ -44,6 +44,16 @@ presets:
         value: gcr.io/spectro-images
       - name: OVERLAY
         value: overlays/prod
+      - name: ACCESS_TOKEN_USR
+        valueFrom:
+          secretKeyRef:
+            name: git-pull-secret
+            key: ACCESS_TOKEN_USR
+      - name: ACCESS_TOKEN_PWD
+        valueFrom:
+          secretKeyRef:
+            name: git-pull-secret
+            key: ACCESS_TOKEN_PWD
 
   - labels:
       preset-push-tokens: "true"
@@ -121,7 +131,7 @@ presubmits:
         preset-push-tokens: "true"
       spec:
         containers:
-        - image: gcr.io/spectro-cicd/spectro-prow-builder:v22
+        - image: gcr.io/testbed1-249617/spectro-prow-builder:24
           command:
           - spectro-runner.sh
           args:

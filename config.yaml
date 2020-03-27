@@ -19,7 +19,7 @@ plank:
       path_strategy: "explicit"
     gcs_credentials_secret: "gcs-credentials"
     ssh_key_secrets:
-      - ssh-key-secret
+      - prow-ssh-secret
 
 # Sinker Config
 sinker:
@@ -44,6 +44,23 @@ presets:
         value: gcr.io/spectro-images
       - name: OVERLAY
         value: overlays/prod
+      - name: SONARQUBE_URL
+        value: http://40.71.43.95:9000
+      - name: ACCESS_TOKEN_USR
+        valueFrom:
+          secretKeyRef:
+            name: git-pull-secret
+            key: ACCESS_TOKEN_USR
+      - name: ACCESS_TOKEN_PWD
+        valueFrom:
+          secretKeyRef:
+            name: git-pull-secret
+            key: ACCESS_TOKEN_PWD
+      - name: SONAR_SCAN_TOKEN
+        valueFrom:
+          secretKeyRef:
+            name: sonar-scan-token
+            key: SONAR_SCAN_TOKEN
 
   - labels:
       preset-push-tokens: "true"
@@ -91,9 +108,10 @@ presubmits:
               - prow/presubmit.sh
 
   roshanirathi/prow-trial:
-    - name: rosh_prow_trial
-      context: rosh_prow_trial
+    - name: rosh-prow
+      context: rosh-prow
       agent: kubernetes
+      cluster: gke_testbed1-249617_us-central1-c_prowtest1
       decorate: true
       always_run: true
       clone_uri: "git@github.com:roshanirathi/prow-trial.git"
@@ -103,72 +121,55 @@ presubmits:
       spec:
         containers:
           - name: trial
-            image: golang
-            command: ["go"]
-            args: ["build", "main.go"]
-    - name: test-1
-      context: test-1
+            image: alpine
+            command: ["echo"]
+            args: ["hello", "world"]
+
+  spectrocloud/hubble:
+    - name: hubble-rosh
+      context: hubble-rosh
       agent: kubernetes
+      cluster: gke_testbed1-249617_us-central1-c_prowtest1
       decorate: true
-      #always_run: true
-      clone_uri: "git@github.com:roshanirathi/prow-trial.git"
+      always_run: false
+      clone_uri: "git@github.com:spectrocloud/hubble.git"
       labels:
         preset-build_jobs: "true"
         preset-push-tokens: "true"
       spec:
         containers:
-          - name: test-1
-            image: alpine
-            command: ["echo"]
-            args: ["hello", "world"]
-    - name: test-2
-      context: test-2
+        - image: gcr.io/testbed1-249617/spectro-prow-builder:24
+          command:
+          - spectro-runner.sh
+          args:
+          - sh
+          - prow/presubmit.sh
+          resources:
+            requests:
+              memory: "2Gi"
+
+  spectrocloud/optic:
+    - name: optic-rosh
+      context: optic-rosh
       agent: kubernetes
+      cluster: gke_testbed1-249617_us-central1-c_prowtest1
       decorate: true
-      #always_run: true
-      trigger: ^test-suite$
-      rerun_command: test-suite
-      clone_uri: "git@github.com:roshanirathi/prow-trial.git"
+      always_run: false
+      clone_uri: "git@github.com:spectrocloud/optic.git"
       labels:
         preset-build_jobs: "true"
         preset-push-tokens: "true"
       spec:
         containers:
-          - name: test-2
-            image: alpine
-            command: ["echo"]
-            args: ["hello", "world"]
-    - name: test-3
-      context: test-3
-      agent: kubernetes
-      decorate: true
-      #always_run: true
-      trigger: ^test-suite$
-      rerun_command: test-suite
-      clone_uri: "git@github.com:roshanirathi/prow-trial.git"
-      labels:
-        preset-build_jobs: "true"
-        preset-push-tokens: "true"
-      spec:
-        containers:
-          - name: test-3
-            image: alpine
-            command: ["echo"]
-            args: ["hello", "world"]
-    - name: test-4
-      context: test-4
-      agent: kubernetes
-      decorate: true
-      #always_run: true
-      trigger: ^test-suite$
-      rerun_command: test-suite
-      clone_uri: "git@github.com:roshanirathi/prow-trial.git"
-      labels:
-        preset-build_jobs: "true"
-        preset-push-tokens: "true"
-      spec:
-        containers:
-          - name: test-4
-            image: alpine
-            command: ["echo"]
-            args: ["hello", "world"]
+        - image: gcr.io/testbed1-249617/spectro-prow-builder-jdk8:24
+          command:
+          - spectro-runner.sh
+          args:
+          - sh
+          - prow/presubmit.sh
+          #- sleep
+          #- "1200"
+          resources:
+            requests:
+              memory: "4Gi"
+

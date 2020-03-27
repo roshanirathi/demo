@@ -32,3 +32,14 @@ plugins:
     - trigger
     - welcome
     - yuks
+
+  spectrocloud/optic:
+    - wip 
+    - approve
+    - lgtm
+    - label
+    - size
+    - blunderbuss
+    - trigger
+    - welcome
+    - yuks
